@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>뽀라 응원단 🐣</title>
+  <title>뽀라 응원단 🥚</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <style>
@@ -12,7 +12,7 @@
       --bg: #faf9f7; --bg2: #f2f0ec; --bg3: #ffffff;
       --border: rgba(0,0,0,0.1); --border2: rgba(0,0,0,0.18);
       --text: #1a1917; --text2: #6b6860; --text3: #a8a59f;
-      --purple-bg: #EEEDFE; --purple: #3C3489; --purple-mid: #7F77DD;
+      --purple-bg: #EEEDFE; --purple: #3C3489;
       --pink-bg: #FBEAF0; --pink: #993556; --pink-border: #D4537E;
       --amber-bg: #FAEEDA; --amber: #633806;
       --green-bg: #EAF3DE; --green: #27500A;
@@ -51,36 +51,61 @@
     .tabs { display: flex; gap: 4px; background: var(--bg2); padding: 4px; border-radius: var(--radius); margin-bottom: 1rem; border: 0.5px solid var(--border); }
     .tab { flex: 1; padding: 9px 4px; border: none; background: transparent; border-radius: var(--radius-sm); font-size: 13px; color: var(--text2); cursor: pointer; font-family: inherit; transition: all 0.15s; }
     .tab.on { background: var(--bg3); color: var(--text); font-weight: 600; border: 0.5px solid var(--border); }
-    .sec { display: none; }
-    .sec.on { display: block; }
+    .sec { display: none; } .sec.on { display: block; }
     .card { background: var(--bg3); border-radius: var(--radius); border: 0.5px solid var(--border); padding: 1rem 1.25rem; margin-bottom: 0.75rem; }
     .card-title { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 12px; }
     .form-row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
     .form-row input, .form-row select, .form-row textarea { flex: 1; min-width: 110px; padding: 8px 10px; border: 0.5px solid var(--border2); border-radius: var(--radius-sm); background: var(--bg2); color: var(--text); font-size: 13px; font-family: inherit; }
-    .form-row textarea { min-height: 64px; resize: vertical; }
     .btn-add { padding: 8px 16px; background: var(--purple-bg); color: var(--purple); border: none; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; font-family: inherit; }
     .btn-add:hover { opacity: 0.85; }
+    .type-tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+    .type-tab { flex: 1; padding: 9px 8px; border: 1.5px solid var(--border2); border-radius: var(--radius-sm); background: transparent; color: var(--text2); font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; text-align: center; transition: all 0.15s; }
+    .type-tab.on-direct { background: var(--purple-bg); color: var(--purple); border-color: var(--purple); font-weight: 600; }
+    .type-tab.on-indirect { background: var(--amber-bg); color: var(--amber); border-color: var(--amber); font-weight: 600; }
+    .summary-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
+    .summary-card { border-radius: var(--radius-sm); padding: 12px; text-align: center; }
+    .summary-card.direct { background: var(--purple-bg); }
+    .summary-card.indirect { background: var(--amber-bg); }
+    .summary-card.total { background: var(--bg2); border: 0.5px solid var(--border); }
+    .sc-label { font-size: 10px; font-weight: 600; margin-bottom: 5px; }
+    .summary-card.direct .sc-label { color: var(--purple); }
+    .summary-card.indirect .sc-label { color: var(--amber); }
+    .summary-card.total .sc-label { color: var(--text2); }
+    .sc-val { font-size: 15px; font-weight: 700; }
+    .summary-card.direct .sc-val { color: var(--purple); }
+    .summary-card.indirect .sc-val { color: var(--amber); }
+    .summary-card.total .sc-val { color: var(--text); }
+    .cat-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .cat-btn { padding: 4px 12px; border: 0.5px solid var(--border2); border-radius: 100px; background: transparent; color: var(--text2); font-size: 12px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    .cat-btn.on { background: var(--purple-bg); color: var(--purple); border-color: var(--purple); font-weight: 600; }
+    .sec-header { display: flex; align-items: center; padding: 8px 0 5px; border-bottom: 0.5px solid var(--border); margin-bottom: 4px; }
+    .sec-header-label { font-size: 12px; font-weight: 700; }
+    .sec-header-label.direct { color: var(--purple); }
+    .sec-header-label.indirect { color: var(--amber); }
+    .sec-header-sum { font-size: 12px; font-weight: 700; margin-left: auto; }
+    .sec-header-sum.direct { color: var(--purple); }
+    .sec-header-sum.indirect { color: var(--amber); }
     .list-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
     .list-item:last-child { border-bottom: none; padding-bottom: 0; }
     .avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
     .item-body { flex: 1; min-width: 0; }
     .item-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
     .item-name { font-size: 13px; font-weight: 600; }
-    .item-amount { font-size: 13px; font-weight: 600; color: var(--purple); white-space: nowrap; }
+    .item-amount { font-size: 13px; font-weight: 600; white-space: nowrap; }
+    .item-amount.direct { color: var(--purple); }
+    .item-amount.indirect { color: var(--amber); }
     .item-detail { font-size: 12px; color: var(--text2); margin-top: 2px; }
-    .item-date { font-size: 11px; color: var(--text3); margin-top: 2px; }
+    .item-date-row { font-size: 11px; color: var(--text3); margin-top: 3px; display: flex; align-items: center; gap: 6px; }
+    .cat-badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 1px 7px; border-radius: 100px; background: var(--bg2); color: var(--text2); }
     .btn-del { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 14px; padding: 3px 5px; border-radius: 4px; flex-shrink: 0; line-height: 1; }
     .btn-del:hover { color: var(--red); background: var(--red-bg); }
-    .total-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 0; margin-top: 8px; border-top: 0.5px solid var(--border); }
-    .total-label { font-size: 12px; color: var(--text2); }
-    .total-val { font-size: 16px; font-weight: 600; color: var(--purple); }
-    .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-sm); }
-    .badge-접수 { background: var(--blue-bg); color: var(--blue); }
-    .badge-필기 { background: var(--purple-bg); color: var(--purple); }
-    .badge-실기 { background: var(--amber-bg); color: var(--amber); }
-    .badge-면접 { background: var(--pink-bg); color: var(--pink); }
-    .badge-결과 { background: var(--green-bg); color: var(--green); }
-    .badge-기타 { background: var(--bg2); color: var(--text2); }
+    .cheer-bubble { background: var(--pink-bg); border-left: 3px solid var(--pink-border); border-radius: 0 var(--radius) var(--radius) 0; padding: 10px 14px; margin-bottom: 8px; position: relative; }
+    .cheer-who { font-size: 12px; font-weight: 600; color: var(--pink); }
+    .cheer-msg { font-size: 13px; line-height: 1.6; margin-top: 4px; }
+    .cheer-date { font-size: 11px; color: var(--text3); margin-top: 4px; }
+    .sender-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+    .sender-btn { padding: 5px 14px; border: 0.5px solid var(--border2); border-radius: 100px; background: transparent; color: var(--text2); font-size: 12px; cursor: pointer; font-family: inherit; }
+    .sender-btn.on { background: var(--pink-bg); color: var(--pink); border-color: var(--pink-border); font-weight: 600; }
     .exam-item { display: flex; align-items: flex-start; gap: 12px; background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px; }
     .exam-item.past { opacity: 0.4; }
     .dday-box { min-width: 52px; text-align: center; padding: 6px 4px; border-radius: var(--radius-sm); flex-shrink: 0; }
@@ -91,20 +116,21 @@
     .exam-meta { font-size: 12px; color: var(--text2); margin-top: 3px; }
     .exam-datestr { font-size: 11px; color: var(--text3); margin-top: 2px; }
     .sec-label { font-size: 12px; font-weight: 600; color: var(--text3); padding: 8px 0 6px; border-bottom: 0.5px solid var(--border); margin-bottom: 8px; }
-    .cheer-bubble { background: var(--pink-bg); border-left: 3px solid var(--pink-border); border-radius: 0 var(--radius) var(--radius) 0; padding: 10px 14px; margin-bottom: 8px; position: relative; }
-    .cheer-who { font-size: 12px; font-weight: 600; color: var(--pink); }
-    .cheer-msg { font-size: 13px; line-height: 1.6; margin-top: 4px; }
-    .cheer-date { font-size: 11px; color: var(--text3); margin-top: 4px; }
-    .sender-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-    .sender-btn { padding: 5px 14px; border: 0.5px solid var(--border2); border-radius: 100px; background: transparent; color: var(--text2); font-size: 12px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
-    .sender-btn.on { background: var(--pink-bg); color: var(--pink); border-color: var(--pink-border); font-weight: 600; }
+    .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-sm); }
+    .badge-접수 { background: var(--blue-bg); color: var(--blue); }
+    .badge-필기 { background: var(--purple-bg); color: var(--purple); }
+    .badge-실기 { background: var(--amber-bg); color: var(--amber); }
+    .badge-면접 { background: var(--pink-bg); color: var(--pink); }
+    .badge-결과 { background: var(--green-bg); color: var(--green); }
+    .badge-기타 { background: var(--bg2); color: var(--text2); }
     .empty { text-align: center; padding: 2.5rem 1rem; color: var(--text3); font-size: 13px; }
     .loading { text-align: center; padding: 1.5rem; color: var(--text3); font-size: 13px; }
   </style>
 </head>
 <body>
+
 <div class="header">
-  <div class="header-emoji">🐣</div>
+  <div class="header-emoji">🥚</div>
   <h1>뽀라 응원단</h1>
   <div class="sub">세무공무원 합격까지 온 가족이 함께!</div>
   <div class="dday-pill" id="dday-display">D-day 설정해주세요</div>
@@ -113,6 +139,7 @@
     <button onclick="setDday()">설정</button>
   </div>
 </div>
+
 <div class="container">
   <div class="stats">
     <div class="stat"><div class="stat-label">총 지원금</div><div class="stat-value" id="s-money">0</div><div class="stat-unit">만원</div></div>
@@ -121,7 +148,7 @@
   </div>
   <div class="tabs">
     <button class="tab on" onclick="showTab('exam',this)">📅 시험 일정</button>
-    <button class="tab" onclick="showTab('money',this)">💸 용돈/지원금</button>
+    <button class="tab" onclick="showTab('money',this)">💸 지원금</button>
     <button class="tab" onclick="showTab('cheer',this)">💌 응원</button>
   </div>
   <div id="sec-exam" class="sec on">
@@ -148,7 +175,11 @@
   </div>
   <div id="sec-money" class="sec">
     <div class="card">
-      <div class="card-title">기록 추가</div>
+      <div class="card-title">지원금 추가</div>
+      <div class="type-tabs">
+        <button class="type-tab on-direct" id="type-direct" onclick="setMoneyType('direct')">💜 직접지원금</button>
+        <button class="type-tab" id="type-indirect" onclick="setMoneyType('indirect')">🟡 간접지원금</button>
+      </div>
       <div class="form-row">
         <select id="m-who">
           <option>소영 언니</option>
@@ -157,19 +188,35 @@
         </select>
         <input type="number" id="m-amt" placeholder="금액 (만원)" min="0" />
       </div>
+      <div class="form-row" id="cat-row" style="display:none">
+        <select id="m-cat">
+          <option>응시료</option>
+          <option>교재비</option>
+          <option>교통비</option>
+          <option>식사</option>
+          <option>물건/옷</option>
+          <option>학원비</option>
+          <option>기타</option>
+        </select>
+      </div>
       <div class="form-row">
-        <input type="text" id="m-memo" placeholder="메모 (예: 교재비, 응시료)" />
+        <input type="text" id="m-memo" placeholder="메모 (선택)" />
         <input type="date" id="m-date" />
         <button class="btn-add" onclick="addMoney()">추가</button>
       </div>
     </div>
     <div class="card">
-      <div class="card-title">지원 내역</div>
-      <div id="money-list"><div class="loading">불러오는 중...</div></div>
-      <div class="total-row">
-        <span class="total-label">총 합계</span>
-        <span class="total-val" id="money-total">0만원</span>
+      <div class="summary-grid">
+        <div class="summary-card direct"><div class="sc-label">💜 직접지원금</div><div class="sc-val" id="sum-direct">0만원</div></div>
+        <div class="summary-card indirect"><div class="sc-label">🟡 간접지원금</div><div class="sc-val" id="sum-indirect">0만원</div></div>
+        <div class="summary-card total"><div class="sc-label">총 합계</div><div class="sc-val" id="sum-total">0만원</div></div>
       </div>
+      <div class="cat-filter">
+        <button class="cat-btn on" onclick="setCatFilter('all',this)">전체</button>
+        <button class="cat-btn" onclick="setCatFilter('direct',this)">직접만</button>
+        <button class="cat-btn" onclick="setCatFilter('indirect',this)">간접만</button>
+      </div>
+      <div id="money-list"><div class="loading">불러오는 중...</div></div>
     </div>
   </div>
   <div id="sec-cheer" class="sec">
@@ -193,6 +240,7 @@
     </div>
   </div>
 </div>
+
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyCYCtOlMnBHPo53FkZNBuetBpegSjN-Pb0",
@@ -207,6 +255,9 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
   let sender = '소영 언니';
+  let moneyType = 'direct';
+  let catFilter = 'all';
+  let allMoneyArr = [];
   function today() { return new Date().toISOString().split('T')[0]; }
   function fmt(d) { return d ? d.replace(/-/g,'.') : ''; }
   function diff(d) {
@@ -230,6 +281,12 @@
     else if (n === 0) el.textContent = 'D-day 오늘! 🎯';
     else el.textContent = 'D+'+Math.abs(n);
   }
+  function showTab(name, btn) {
+    document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+    document.getElementById('sec-'+name).classList.add('on');
+    btn.classList.add('on');
+  }
   db.ref('exams').on('value', snap => {
     const data = snap.val() || {};
     const arr = Object.entries(data).map(([k,v]) => ({...v, _key:k}));
@@ -248,7 +305,7 @@
     document.getElementById('e-memo').value = '';
     document.getElementById('e-date').value = '';
   }
-  function delExam(key) { if(confirm('삭제할까요?')) db.ref('exams/'+key).remove(); }
+  function delExam(key) { db.ref('exams/'+key).remove(); }
   function ddayStyle(n) {
     if (n < 0)  return { bg:'#F1EFE8', nc:'#888780', lc:'#B4B2A9' };
     if (n === 0) return { bg:'#FBEAF0', nc:'#993556', lc:'#D4537E' };
@@ -262,71 +319,74 @@
     const up = arr.filter(r => diff(r.date) >= 0);
     const past = arr.filter(r => diff(r.date) < 0);
     let h = '';
-    if (up.length) {
-      h += '<div class="sec-label">예정된 일정 ('+up.length+'건)</div>';
-      h += up.map(r => examHtml(r, false)).join('');
-    }
-    if (past.length) {
-      h += '<div class="sec-label" style="margin-top:12px">지난 일정 ('+past.length+'건)</div>';
-      h += past.map(r => examHtml(r, true)).join('');
-    }
+    if (up.length) { h += '<div class="sec-label">예정된 일정 ('+up.length+'건)</div>'; h += up.map(r => examHtml(r, false)).join(''); }
+    if (past.length) { h += '<div class="sec-label" style="margin-top:12px">지난 일정 ('+past.length+'건)</div>'; h += past.map(r => examHtml(r, true)).join(''); }
     el.innerHTML = h;
   }
   function examHtml(r, isPast) {
-    const n = diff(r.date);
-    const s = ddayStyle(n);
+    const n = diff(r.date), s = ddayStyle(n);
     const txt = n < 0 ? '+'+Math.abs(n) : n === 0 ? '당일' : '-'+n;
     const lbl = n < 0 ? '지남' : n === 0 ? '오늘!' : 'D-day';
-    return '<div class="exam-item'+(isPast?' past':'')+'">'+
-      '<div class="dday-box" style="background:'+s.bg+'">'+
-        '<div class="dday-num" style="color:'+s.nc+'">'+txt+'</div>'+
-        '<div class="dday-lbl" style="color:'+s.lc+'">'+lbl+'</div>'+
-      '</div>'+
-      '<div class="exam-body">'+
-        '<div class="exam-name">'+r.name+'</div>'+
-        '<span class="badge badge-'+r.type+'">'+r.type+'</span>'+
-        (r.memo ? '<div class="exam-meta">'+r.memo+'</div>' : '')+
-        '<div class="exam-datestr">'+fmt(r.date)+'</div>'+
-      '</div>'+
-      '<button class="btn-del" onclick="delExam(\''+r._key+'\')">✕</button>'+
-    '</div>';
+    return '<div class="exam-item'+(isPast?' past':'')+'"><div class="dday-box" style="background:'+s.bg+'"><div class="dday-num" style="color:'+s.nc+'">'+txt+'</div><div class="dday-lbl" style="color:'+s.lc+'">'+lbl+'</div></div><div class="exam-body"><div class="exam-name">'+r.name+'</div><span class="badge badge-'+r.type+'">'+r.type+'</span>'+(r.memo?'<div class="exam-meta">'+r.memo+'</div>':'')+'<div class="exam-datestr">'+fmt(r.date)+'</div></div><button class="btn-del" onclick="delExam(\''+r._key+'\')">✕</button></div>';
+  }
+  function setMoneyType(type) {
+    moneyType = type;
+    document.getElementById('type-direct').className = 'type-tab' + (type==='direct' ? ' on-direct' : '');
+    document.getElementById('type-indirect').className = 'type-tab' + (type==='indirect' ? ' on-indirect' : '');
+    document.getElementById('cat-row').style.display = type === 'indirect' ? 'flex' : 'none';
+  }
+  function setCatFilter(filter, btn) {
+    catFilter = filter;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    renderMoney(allMoneyArr);
   }
   db.ref('money').on('value', snap => {
     const data = snap.val() || {};
-    const arr = Object.entries(data).map(([k,v]) => ({...v, _key:k}));
-    arr.sort((a,b) => b.ts - a.ts);
-    renderMoney(arr);
-    document.getElementById('s-money').textContent = arr.reduce((s,r)=>s+(r.amt||0),0).toLocaleString();
+    allMoneyArr = Object.entries(data).map(([k,v]) => ({...v, _key:k}));
+    allMoneyArr.sort((a,b) => b.ts - a.ts);
+    const directSum = allMoneyArr.filter(r=>r.moneyType==='direct'||!r.moneyType).reduce((s,r)=>s+(r.amt||0),0);
+    const indirectSum = allMoneyArr.filter(r=>r.moneyType==='indirect').reduce((s,r)=>s+(r.amt||0),0);
+    const total = directSum + indirectSum;
+    document.getElementById('sum-direct').textContent = directSum.toLocaleString()+'만원';
+    document.getElementById('sum-indirect').textContent = indirectSum.toLocaleString()+'만원';
+    document.getElementById('sum-total').textContent = total.toLocaleString()+'만원';
+    document.getElementById('s-money').textContent = total.toLocaleString();
+    renderMoney(allMoneyArr);
   });
   function addMoney() {
     const who = document.getElementById('m-who').value;
     const amt = parseFloat(document.getElementById('m-amt').value);
     const memo = document.getElementById('m-memo').value.trim();
     const date = document.getElementById('m-date').value || today();
+    const cat = moneyType === 'indirect' ? document.getElementById('m-cat').value : '용돈';
     if (!amt || amt <= 0) { alert('금액을 입력해주세요!'); return; }
-    db.ref('money').push({ who, amt, memo, date, ts: Date.now() });
+    db.ref('money').push({ who, amt, memo, date, cat, moneyType, ts: Date.now() });
     document.getElementById('m-amt').value = '';
     document.getElementById('m-memo').value = '';
   }
-  function delMoney(key) { if(confirm('삭제할까요?')) db.ref('money/'+key).remove(); }
+  function delMoney(key) { db.ref('money/'+key).remove(); }
   function renderMoney(arr) {
     const el = document.getElementById('money-list');
-    const tot = document.getElementById('money-total');
-    if (!arr.length) { el.innerHTML = '<div class="empty">아직 기록이 없어요 🐥</div>'; tot.textContent='0만원'; return; }
-    const ico = {'소영 언니':'🐣','엄마':'🌸','아빠':'🌍'};
+    const ico = {'소영 언니':'🥚','엄마':'🌸','아빠':'🌍'};
     const clr = {'소영 언니':'#EEEDFE','엄마':'#FBEAF0','아빠':'#E1F5EE'};
-    el.innerHTML = arr.map(r =>
-      '<div class="list-item">'+
-        '<div class="avatar" style="background:'+(clr[r.who]||'#EEEDFE')+'">'+(ico[r.who]||'👤')+'</div>'+
-        '<div class="item-body">'+
-          '<div class="item-row"><span class="item-name">'+r.who+'</span><span class="item-amount">'+((r.amt||0).toLocaleString())+'만원</span></div>'+
-          (r.memo ? '<div class="item-detail">'+r.memo+'</div>' : '')+
-          '<div class="item-date">'+fmt(r.date)+'</div>'+
-        '</div>'+
-        '<button class="btn-del" onclick="delMoney(\''+r._key+'\')">✕</button>'+
-      '</div>'
-    ).join('');
-    tot.textContent = arr.reduce((s,r)=>s+(r.amt||0),0).toLocaleString()+'만원';
+    const directItems = arr.filter(r => r.moneyType === 'direct' || !r.moneyType);
+    const indirectItems = arr.filter(r => r.moneyType === 'indirect');
+    const showDirect = catFilter !== 'indirect';
+    const showIndirect = catFilter !== 'direct';
+    let h = '';
+    if (showDirect && directItems.length) {
+      const dSum = directItems.reduce((s,r)=>s+(r.amt||0),0);
+      h += '<div class="sec-header"><span class="sec-header-label direct">💜 직접지원금 (용돈)</span><span class="sec-header-sum direct">'+dSum.toLocaleString()+'만원</span></div>';
+      h += directItems.map(r => '<div class="list-item"><div class="avatar" style="background:'+(clr[r.who]||'#EEEDFE')+'">'+(ico[r.who]||'🥚')+'</div><div class="item-body"><div class="item-row"><span class="item-name">'+r.who+'</span><span class="item-amount direct">'+(r.amt||0).toLocaleString()+'만원</span></div>'+(r.memo?'<div class="item-detail">'+r.memo+'</div>':'')+'<div class="item-date-row">'+fmt(r.date)+'</div></div><button class="btn-del" onclick="delMoney(\''+r._key+'\')">✕</button></div>').join('');
+    }
+    if (showIndirect && indirectItems.length) {
+      const iSum = indirectItems.reduce((s,r)=>s+(r.amt||0),0);
+      h += '<div class="sec-header" style="margin-top:'+(showDirect&&directItems.length?'14px':'0')+'"><span class="sec-header-label indirect">🟡 간접지원금</span><span class="sec-header-sum indirect">'+iSum.toLocaleString()+'만원</span></div>';
+      h += indirectItems.map(r => '<div class="list-item"><div class="avatar" style="background:'+(clr[r.who]||'#EEEDFE')+'">'+(ico[r.who]||'🥚')+'</div><div class="item-body"><div class="item-row"><span class="item-name">'+r.who+'</span><span class="item-amount indirect">'+(r.amt||0).toLocaleString()+'만원</span></div>'+(r.memo?'<div class="item-detail">'+r.memo+'</div>':'')+'<div class="item-date-row">'+fmt(r.date)+'<span class="cat-badge">'+(r.cat||'기타')+'</span></div></div><button class="btn-del" onclick="delMoney(\''+r._key+'\')">✕</button></div>').join('');
+    }
+    if (!h) h = '<div class="empty">아직 기록이 없어요 🥚</div>';
+    el.innerHTML = h;
   }
   db.ref('cheers').on('value', snap => {
     const data = snap.val() || {};
@@ -346,26 +406,11 @@
     db.ref('cheers').push({ who: sender, text, date: today(), ts: Date.now() });
     document.getElementById('c-text').value = '';
   }
-  function delCheer(key) { if(confirm('삭제할까요?')) db.ref('cheers/'+key).remove(); }
+  function delCheer(key) { db.ref('cheers/'+key).remove(); }
   function renderCheer(arr) {
     const el = document.getElementById('cheer-list');
     if (!arr.length) { el.innerHTML = '<div class="empty">첫 응원을 남겨보세요 🌸</div>'; return; }
-    el.innerHTML = arr.map(r =>
-      '<div style="position:relative;margin-bottom:8px">'+
-        '<div class="cheer-bubble">'+
-          '<div class="cheer-who">'+r.who+'</div>'+
-          '<div class="cheer-msg">'+r.text+'</div>'+
-          '<div class="cheer-date">'+fmt(r.date)+'</div>'+
-        '</div>'+
-        '<button class="btn-del" onclick="delCheer(\''+r._key+'\')" style="position:absolute;top:8px;right:6px">✕</button>'+
-      '</div>'
-    ).join('');
-  }
-  function showTab(name, btn) {
-    document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
-    document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
-    document.getElementById('sec-'+name).classList.add('on');
-    btn.classList.add('on');
+    el.innerHTML = arr.map(r => '<div style="position:relative;margin-bottom:8px"><div class="cheer-bubble"><div class="cheer-who">'+r.who+'</div><div class="cheer-msg">'+r.text+'</div><div class="cheer-date">'+fmt(r.date)+'</div></div><button class="btn-del" onclick="delCheer(\''+r._key+'\')" style="position:absolute;top:8px;right:6px">✕</button></div>').join('');
   }
   document.getElementById('m-date').value = today();
 </script>
