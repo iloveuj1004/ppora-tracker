@@ -4,279 +4,105 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>뽀라 응원단 🐣</title>
-
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #faf9f7;
-      --bg2: #f2f0ec;
-      --bg3: #ffffff;
-      --border: rgba(0,0,0,0.1);
-      --border2: rgba(0,0,0,0.18);
-      --text: #1a1917;
-      --text2: #6b6860;
-      --text3: #a8a59f;
-      --purple-bg: #EEEDFE;
-      --purple: #3C3489;
-      --purple-mid: #7F77DD;
-      --pink-bg: #FBEAF0;
-      --pink: #993556;
-      --pink-border: #D4537E;
-      --amber-bg: #FAEEDA;
-      --amber: #633806;
-      --green-bg: #EAF3DE;
-      --green: #27500A;
-      --red-bg: #FCEBEB;
-      --red: #791F1F;
-      --blue-bg: #E6F1FB;
-      --blue: #0C447C;
-      --radius: 10px;
-      --radius-sm: 6px;
+      --bg: #faf9f7; --bg2: #f2f0ec; --bg3: #ffffff;
+      --border: rgba(0,0,0,0.1); --border2: rgba(0,0,0,0.18);
+      --text: #1a1917; --text2: #6b6860; --text3: #a8a59f;
+      --purple-bg: #EEEDFE; --purple: #3C3489; --purple-mid: #7F77DD;
+      --pink-bg: #FBEAF0; --pink: #993556; --pink-border: #D4537E;
+      --amber-bg: #FAEEDA; --amber: #633806;
+      --green-bg: #EAF3DE; --green: #27500A;
+      --red-bg: #FCEBEB; --red: #791F1F;
+      --blue-bg: #E6F1FB; --blue: #0C447C;
+      --radius: 10px; --radius-sm: 6px;
     }
-
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #1a1917;
-        --bg2: #242320;
-        --bg3: #2e2c29;
-        --border: rgba(255,255,255,0.1);
-        --border2: rgba(255,255,255,0.18);
-        --text: #f0ede8;
-        --text2: #a8a59f;
-        --text3: #6b6860;
-        --purple-bg: #26215C;
-        --purple: #AFA9EC;
-        --purple-mid: #AFA9EC;
-        --pink-bg: #4B1528;
-        --pink: #F4C0D1;
-        --pink-border: #ED93B1;
-        --amber-bg: #412402;
-        --amber: #FAC775;
-        --green-bg: #173404;
-        --green: #C0DD97;
-        --red-bg: #501313;
-        --red: #F7C1C1;
-        --blue-bg: #042C53;
-        --blue: #B5D4F4;
+        --bg: #1a1917; --bg2: #242320; --bg3: #2e2c29;
+        --border: rgba(255,255,255,0.1); --border2: rgba(255,255,255,0.18);
+        --text: #f0ede8; --text2: #a8a59f; --text3: #6b6860;
+        --purple-bg: #26215C; --purple: #AFA9EC;
+        --pink-bg: #4B1528; --pink: #F4C0D1; --pink-border: #ED93B1;
+        --amber-bg: #412402; --amber: #FAC775;
+        --green-bg: #173404; --green: #C0DD97;
+        --red-bg: #501313; --red: #F7C1C1;
+        --blue-bg: #042C53; --blue: #B5D4F4;
       }
     }
-
-    body {
-      font-family: -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding-bottom: 2rem;
-    }
-
+    body { font-family: -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 2rem; }
     .container { max-width: 640px; margin: 0 auto; padding: 0 1rem; }
-
-    /* Header */
-    .header {
-      text-align: center;
-      padding: 2rem 1rem 1.25rem;
-      background: var(--bg2);
-      border-bottom: 0.5px solid var(--border);
-      margin-bottom: 1rem;
-    }
+    .header { text-align: center; padding: 2rem 1rem 1.25rem; background: var(--bg2); border-bottom: 0.5px solid var(--border); margin-bottom: 1rem; }
     .header-emoji { font-size: 3rem; margin-bottom: 0.5rem; }
     .header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
     .header .sub { font-size: 13px; color: var(--text2); margin-top: 4px; }
-    .dday-pill {
-      display: inline-block;
-      background: var(--purple-bg); color: var(--purple);
-      font-size: 13px; font-weight: 600;
-      padding: 5px 16px; border-radius: 100px; margin-top: 10px;
-    }
-    .dday-edit {
-      display: flex; gap: 8px; align-items: center;
-      max-width: 320px; margin: 10px auto 0;
-    }
-    .dday-edit input {
-      flex: 1; padding: 7px 10px; border: 0.5px solid var(--border2);
-      border-radius: var(--radius-sm); background: var(--bg3);
-      color: var(--text); font-size: 13px;
-      font-family: inherit;
-    }
-    .dday-edit button {
-      padding: 7px 14px; background: var(--purple-bg); color: var(--purple);
-      border: none; border-radius: var(--radius-sm);
-      font-size: 12px; font-weight: 600; cursor: pointer;
-    }
-
-    /* Stats */
+    .dday-pill { display: inline-block; background: var(--purple-bg); color: var(--purple); font-size: 13px; font-weight: 600; padding: 5px 16px; border-radius: 100px; margin-top: 10px; }
+    .dday-edit { display: flex; gap: 8px; align-items: center; max-width: 320px; margin: 10px auto 0; }
+    .dday-edit input { flex: 1; padding: 7px 10px; border: 0.5px solid var(--border2); border-radius: var(--radius-sm); background: var(--bg3); color: var(--text); font-size: 13px; font-family: inherit; }
+    .dday-edit button { padding: 7px 14px; background: var(--purple-bg); color: var(--purple); border: none; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; cursor: pointer; }
     .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 1rem; }
-    .stat {
-      background: var(--bg2); border-radius: var(--radius);
-      border: 0.5px solid var(--border);
-      padding: 12px; text-align: center;
-    }
+    .stat { background: var(--bg2); border-radius: var(--radius); border: 0.5px solid var(--border); padding: 12px; text-align: center; }
     .stat-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
     .stat-value { font-size: 22px; font-weight: 600; }
     .stat-unit { font-size: 11px; color: var(--text3); margin-top: 2px; }
-
-    /* Tabs */
-    .tabs {
-      display: flex; gap: 4px;
-      background: var(--bg2); padding: 4px;
-      border-radius: var(--radius); margin-bottom: 1rem;
-      border: 0.5px solid var(--border);
-    }
-    .tab {
-      flex: 1; padding: 9px 4px; border: none; background: transparent;
-      border-radius: var(--radius-sm); font-size: 13px; color: var(--text2);
-      cursor: pointer; font-family: inherit; transition: all 0.15s;
-    }
-    .tab.on {
-      background: var(--bg3); color: var(--text); font-weight: 600;
-      border: 0.5px solid var(--border);
-    }
-
-    /* Sections */
+    .tabs { display: flex; gap: 4px; background: var(--bg2); padding: 4px; border-radius: var(--radius); margin-bottom: 1rem; border: 0.5px solid var(--border); }
+    .tab { flex: 1; padding: 9px 4px; border: none; background: transparent; border-radius: var(--radius-sm); font-size: 13px; color: var(--text2); cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    .tab.on { background: var(--bg3); color: var(--text); font-weight: 600; border: 0.5px solid var(--border); }
     .sec { display: none; }
     .sec.on { display: block; }
-
-    /* Cards */
-    .card {
-      background: var(--bg3); border-radius: var(--radius);
-      border: 0.5px solid var(--border); padding: 1rem 1.25rem; margin-bottom: 0.75rem;
-    }
+    .card { background: var(--bg3); border-radius: var(--radius); border: 0.5px solid var(--border); padding: 1rem 1.25rem; margin-bottom: 0.75rem; }
     .card-title { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 12px; }
-
-    /* Form */
     .form-row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-    .form-row input, .form-row select, .form-row textarea {
-      flex: 1; min-width: 110px; padding: 8px 10px;
-      border: 0.5px solid var(--border2); border-radius: var(--radius-sm);
-      background: var(--bg2); color: var(--text); font-size: 13px;
-      font-family: inherit;
-    }
+    .form-row input, .form-row select, .form-row textarea { flex: 1; min-width: 110px; padding: 8px 10px; border: 0.5px solid var(--border2); border-radius: var(--radius-sm); background: var(--bg2); color: var(--text); font-size: 13px; font-family: inherit; }
     .form-row textarea { min-height: 64px; resize: vertical; }
-    .btn-add {
-      padding: 8px 16px; background: var(--purple-bg); color: var(--purple);
-      border: none; border-radius: var(--radius-sm);
-      font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
-      font-family: inherit;
-    }
+    .btn-add { padding: 8px 16px; background: var(--purple-bg); color: var(--purple); border: none; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; font-family: inherit; }
     .btn-add:hover { opacity: 0.85; }
-
-    /* List items */
-    .list-item {
-      display: flex; align-items: flex-start; gap: 10px;
-      padding: 10px 0; border-bottom: 0.5px solid var(--border);
-    }
+    .list-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
     .list-item:last-child { border-bottom: none; padding-bottom: 0; }
-    .avatar {
-      width: 34px; height: 34px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; flex-shrink: 0;
-    }
+    .avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
     .item-body { flex: 1; min-width: 0; }
     .item-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
     .item-name { font-size: 13px; font-weight: 600; }
     .item-amount { font-size: 13px; font-weight: 600; color: var(--purple); white-space: nowrap; }
     .item-detail { font-size: 12px; color: var(--text2); margin-top: 2px; }
     .item-date { font-size: 11px; color: var(--text3); margin-top: 2px; }
-    .btn-del {
-      background: none; border: none; cursor: pointer;
-      color: var(--text3); font-size: 14px; padding: 3px 5px;
-      border-radius: 4px; flex-shrink: 0; line-height: 1;
-    }
+    .btn-del { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 14px; padding: 3px 5px; border-radius: 4px; flex-shrink: 0; line-height: 1; }
     .btn-del:hover { color: var(--red); background: var(--red-bg); }
-
-    /* Total */
-    .total-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 0 0; margin-top: 8px; border-top: 0.5px solid var(--border);
-    }
+    .total-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 0; margin-top: 8px; border-top: 0.5px solid var(--border); }
     .total-label { font-size: 12px; color: var(--text2); }
     .total-val { font-size: 16px; font-weight: 600; color: var(--purple); }
-
-    /* Badge */
-    .badge {
-      display: inline-block; font-size: 11px; font-weight: 600;
-      padding: 2px 8px; border-radius: var(--radius-sm);
-    }
+    .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-sm); }
     .badge-접수 { background: var(--blue-bg); color: var(--blue); }
     .badge-필기 { background: var(--purple-bg); color: var(--purple); }
     .badge-실기 { background: var(--amber-bg); color: var(--amber); }
     .badge-면접 { background: var(--pink-bg); color: var(--pink); }
     .badge-결과 { background: var(--green-bg); color: var(--green); }
     .badge-기타 { background: var(--bg2); color: var(--text2); }
-
-    /* Exam card */
-    .exam-item {
-      display: flex; align-items: flex-start; gap: 12px;
-      background: var(--bg3); border: 0.5px solid var(--border);
-      border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px;
-    }
+    .exam-item { display: flex; align-items: flex-start; gap: 12px; background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px; }
     .exam-item.past { opacity: 0.4; }
-    .dday-box {
-      min-width: 52px; text-align: center;
-      padding: 6px 4px; border-radius: var(--radius-sm); flex-shrink: 0;
-    }
+    .dday-box { min-width: 52px; text-align: center; padding: 6px 4px; border-radius: var(--radius-sm); flex-shrink: 0; }
     .dday-num { font-size: 16px; font-weight: 700; }
     .dday-lbl { font-size: 10px; margin-top: 1px; }
     .exam-body { flex: 1; min-width: 0; }
     .exam-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
     .exam-meta { font-size: 12px; color: var(--text2); margin-top: 3px; }
     .exam-datestr { font-size: 11px; color: var(--text3); margin-top: 2px; }
-    .sec-label {
-      font-size: 12px; font-weight: 600; color: var(--text3);
-      padding: 8px 0 6px; border-bottom: 0.5px solid var(--border); margin-bottom: 8px;
-    }
-
-    /* Cheer */
-    .cheer-bubble {
-      background: var(--pink-bg); border-left: 3px solid var(--pink-border);
-      border-radius: 0 var(--radius) var(--radius) 0;
-      padding: 10px 14px; margin-bottom: 8px; position: relative;
-    }
+    .sec-label { font-size: 12px; font-weight: 600; color: var(--text3); padding: 8px 0 6px; border-bottom: 0.5px solid var(--border); margin-bottom: 8px; }
+    .cheer-bubble { background: var(--pink-bg); border-left: 3px solid var(--pink-border); border-radius: 0 var(--radius) var(--radius) 0; padding: 10px 14px; margin-bottom: 8px; position: relative; }
     .cheer-who { font-size: 12px; font-weight: 600; color: var(--pink); }
     .cheer-msg { font-size: 13px; line-height: 1.6; margin-top: 4px; }
     .cheer-date { font-size: 11px; color: var(--text3); margin-top: 4px; }
-
-    /* Sender buttons */
     .sender-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-    .sender-btn {
-      padding: 5px 14px; border: 0.5px solid var(--border2);
-      border-radius: 100px; background: transparent; color: var(--text2);
-      font-size: 12px; cursor: pointer; font-family: inherit; transition: all 0.15s;
-    }
+    .sender-btn { padding: 5px 14px; border: 0.5px solid var(--border2); border-radius: 100px; background: transparent; color: var(--text2); font-size: 12px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
     .sender-btn.on { background: var(--pink-bg); color: var(--pink); border-color: var(--pink-border); font-weight: 600; }
-
-    /* Empty */
     .empty { text-align: center; padding: 2.5rem 1rem; color: var(--text3); font-size: 13px; }
-
-    /* Loading */
     .loading { text-align: center; padding: 1.5rem; color: var(--text3); font-size: 13px; }
-
-    /* Setup banner */
-    .setup-banner {
-      background: #FFF8E1; border: 1px solid #FFD54F;
-      border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1rem;
-      font-size: 13px; line-height: 1.7; color: #5D4037;
-    }
-    .setup-banner strong { color: #BF360C; }
-    .setup-banner code {
-      background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;
-      font-family: monospace; font-size: 12px;
-    }
   </style>
 </head>
 <body>
-
-<div class="setup-banner" id="setup-banner">
-  ⚙️ <strong>Firebase 설정 필요!</strong><br>
-  아래 코드에서 <code>firebaseConfig</code> 부분을 본인 Firebase 프로젝트 설정으로 교체해주세요.<br>
-  설정 방법은 README를 참고하세요.
-</div>
-
 <div class="header">
   <div class="header-emoji">🐣</div>
   <h1>뽀라 응원단</h1>
@@ -287,34 +113,17 @@
     <button onclick="setDday()">설정</button>
   </div>
 </div>
-
 <div class="container">
-
   <div class="stats">
-    <div class="stat">
-      <div class="stat-label">총 지원금</div>
-      <div class="stat-value" id="s-money">0</div>
-      <div class="stat-unit">만원</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">예정 시험</div>
-      <div class="stat-value" id="s-exam">0</div>
-      <div class="stat-unit">건</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">응원 메시지</div>
-      <div class="stat-value" id="s-cheer">0</div>
-      <div class="stat-unit">개</div>
-    </div>
+    <div class="stat"><div class="stat-label">총 지원금</div><div class="stat-value" id="s-money">0</div><div class="stat-unit">만원</div></div>
+    <div class="stat"><div class="stat-label">예정 시험</div><div class="stat-value" id="s-exam">0</div><div class="stat-unit">건</div></div>
+    <div class="stat"><div class="stat-label">응원 메시지</div><div class="stat-value" id="s-cheer">0</div><div class="stat-unit">개</div></div>
   </div>
-
   <div class="tabs">
     <button class="tab on" onclick="showTab('exam',this)">📅 시험 일정</button>
     <button class="tab" onclick="showTab('money',this)">💸 용돈/지원금</button>
     <button class="tab" onclick="showTab('cheer',this)">💌 응원</button>
   </div>
-
-  <!-- 시험 일정 -->
   <div id="sec-exam" class="sec on">
     <div class="card">
       <div class="card-title">일정 추가</div>
@@ -337,8 +146,6 @@
     </div>
     <div id="exam-list"><div class="loading">불러오는 중...</div></div>
   </div>
-
-  <!-- 용돈/지원금 -->
   <div id="sec-money" class="sec">
     <div class="card">
       <div class="card-title">기록 추가</div>
@@ -365,12 +172,10 @@
       </div>
     </div>
   </div>
-
-  <!-- 응원 메시지 -->
   <div id="sec-cheer" class="sec">
     <div class="card">
       <div class="card-title">응원 남기기</div>
-      <div class="sender-row" id="sender-row">
+      <div class="sender-row">
         <button class="sender-btn on" onclick="setSender(this,'소영 언니')">소영 언니</button>
         <button class="sender-btn" onclick="setSender(this,'엄마')">엄마</button>
         <button class="sender-btn" onclick="setSender(this,'아빠')">아빠</button>
@@ -387,30 +192,21 @@
       <div id="cheer-list"><div class="loading">불러오는 중...</div></div>
     </div>
   </div>
-
-</div><!-- /container -->
-
+</div>
 <script>
-  // ========================================================
-  // 🔥 여기에 Firebase 설정을 붙여넣으세요
-  // Firebase Console > 프로젝트 설정 > 내 앱 > firebaseConfig
-  // ========================================================
   const firebaseConfig = {
-    apiKey: "여기에-붙여넣기",
-    authDomain: "여기에-붙여넣기",
-    databaseURL: "여기에-붙여넣기",
-    projectId: "여기에-붙여넣기",
-    storageBucket: "여기에-붙여넣기",
-    messagingSenderId: "여기에-붙여넣기",
-    appId: "여기에-붙여넣기"
+    apiKey: "AIzaSyCYCtOlMnBHPo53FkZNBuetBpegSjN-Pb0",
+    authDomain: "ppora-tracker.firebaseapp.com",
+    databaseURL: "https://ppora-tracker-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "ppora-tracker",
+    storageBucket: "ppora-tracker.firebasestorage.app",
+    messagingSenderId: "283445762463",
+    appId: "1:283445762463:web:14ebe2706f2c6dd075c5aa",
+    measurementId: "G-NZPM7PCB3J"
   };
-  // ========================================================
-
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
-
   let sender = '소영 언니';
-
   function today() { return new Date().toISOString().split('T')[0]; }
   function fmt(d) { return d ? d.replace(/-/g,'.') : ''; }
   function diff(d) {
@@ -418,8 +214,6 @@
     const x = new Date(d); x.setHours(0,0,0,0);
     return Math.round((x-t)/86400000);
   }
-
-  // D-day
   db.ref('dday').on('value', snap => {
     const v = snap.val();
     if (v) { updateDday(v); document.getElementById('dday-input').value = v; }
@@ -432,12 +226,10 @@
   function updateDday(d) {
     const n = diff(d);
     const el = document.getElementById('dday-display');
-    if (n > 0) el.textContent = `D-${n}`;
-    else if (n === 0) el.textContent = `D-day 오늘! 🎯`;
-    else el.textContent = `D+${Math.abs(n)}`;
+    if (n > 0) el.textContent = 'D-'+n;
+    else if (n === 0) el.textContent = 'D-day 오늘! 🎯';
+    else el.textContent = 'D+'+Math.abs(n);
   }
-
-  // ── 시험 일정 ──────────────────────────────────────
   db.ref('exams').on('value', snap => {
     const data = snap.val() || {};
     const arr = Object.entries(data).map(([k,v]) => ({...v, _key:k}));
@@ -445,7 +237,6 @@
     renderExam(arr);
     document.getElementById('s-exam').textContent = arr.filter(r=>diff(r.date)>=0).length;
   });
-
   function addExam() {
     const name = document.getElementById('e-name').value.trim();
     const type = document.getElementById('e-type').value;
@@ -457,9 +248,7 @@
     document.getElementById('e-memo').value = '';
     document.getElementById('e-date').value = '';
   }
-
   function delExam(key) { if(confirm('삭제할까요?')) db.ref('exams/'+key).remove(); }
-
   function ddayStyle(n) {
     if (n < 0)  return { bg:'#F1EFE8', nc:'#888780', lc:'#B4B2A9' };
     if (n === 0) return { bg:'#FBEAF0', nc:'#993556', lc:'#D4537E' };
@@ -467,7 +256,6 @@
     if (n <= 30) return { bg:'#FAEEDA', nc:'#633806', lc:'#BA7517' };
     return { bg:'#EEEDFE', nc:'#3C3489', lc:'#7F77DD' };
   }
-
   function renderExam(arr) {
     const el = document.getElementById('exam-list');
     if (!arr.length) { el.innerHTML = '<div class="empty">시험 일정을 추가해보세요 📚</div>'; return; }
@@ -475,46 +263,41 @@
     const past = arr.filter(r => diff(r.date) < 0);
     let h = '';
     if (up.length) {
-      h += `<div class="sec-label">예정된 일정 (${up.length}건)</div>`;
+      h += '<div class="sec-label">예정된 일정 ('+up.length+'건)</div>';
       h += up.map(r => examHtml(r, false)).join('');
     }
     if (past.length) {
-      h += `<div class="sec-label" style="margin-top:12px">지난 일정 (${past.length}건)</div>`;
+      h += '<div class="sec-label" style="margin-top:12px">지난 일정 ('+past.length+'건)</div>';
       h += past.map(r => examHtml(r, true)).join('');
     }
     el.innerHTML = h;
   }
-
   function examHtml(r, isPast) {
     const n = diff(r.date);
     const s = ddayStyle(n);
-    const txt = n < 0 ? `+${Math.abs(n)}` : n === 0 ? '당일' : `-${n}`;
+    const txt = n < 0 ? '+'+Math.abs(n) : n === 0 ? '당일' : '-'+n;
     const lbl = n < 0 ? '지남' : n === 0 ? '오늘!' : 'D-day';
-    return `<div class="exam-item${isPast?' past':''}">
-      <div class="dday-box" style="background:${s.bg}">
-        <div class="dday-num" style="color:${s.nc}">${txt}</div>
-        <div class="dday-lbl" style="color:${s.lc}">${lbl}</div>
-      </div>
-      <div class="exam-body">
-        <div class="exam-name">${r.name}</div>
-        <span class="badge badge-${r.type}">${r.type}</span>
-        ${r.memo ? `<div class="exam-meta">${r.memo}</div>` : ''}
-        <div class="exam-datestr">${fmt(r.date)}</div>
-      </div>
-      <button class="btn-del" onclick="delExam('${r._key}')">✕</button>
-    </div>`;
+    return '<div class="exam-item'+(isPast?' past':'')+'">'+
+      '<div class="dday-box" style="background:'+s.bg+'">'+
+        '<div class="dday-num" style="color:'+s.nc+'">'+txt+'</div>'+
+        '<div class="dday-lbl" style="color:'+s.lc+'">'+lbl+'</div>'+
+      '</div>'+
+      '<div class="exam-body">'+
+        '<div class="exam-name">'+r.name+'</div>'+
+        '<span class="badge badge-'+r.type+'">'+r.type+'</span>'+
+        (r.memo ? '<div class="exam-meta">'+r.memo+'</div>' : '')+
+        '<div class="exam-datestr">'+fmt(r.date)+'</div>'+
+      '</div>'+
+      '<button class="btn-del" onclick="delExam(\''+r._key+'\')">✕</button>'+
+    '</div>';
   }
-
-  // ── 용돈/지원금 ────────────────────────────────────
   db.ref('money').on('value', snap => {
     const data = snap.val() || {};
     const arr = Object.entries(data).map(([k,v]) => ({...v, _key:k}));
     arr.sort((a,b) => b.ts - a.ts);
     renderMoney(arr);
-    const total = arr.reduce((s,r) => s + (r.amt||0), 0);
-    document.getElementById('s-money').textContent = total.toLocaleString();
+    document.getElementById('s-money').textContent = arr.reduce((s,r)=>s+(r.amt||0),0).toLocaleString();
   });
-
   function addMoney() {
     const who = document.getElementById('m-who').value;
     const amt = parseFloat(document.getElementById('m-amt').value);
@@ -525,33 +308,26 @@
     document.getElementById('m-amt').value = '';
     document.getElementById('m-memo').value = '';
   }
-
   function delMoney(key) { if(confirm('삭제할까요?')) db.ref('money/'+key).remove(); }
-
   function renderMoney(arr) {
     const el = document.getElementById('money-list');
     const tot = document.getElementById('money-total');
     if (!arr.length) { el.innerHTML = '<div class="empty">아직 기록이 없어요 🐥</div>'; tot.textContent='0만원'; return; }
     const ico = {'소영 언니':'🐣','엄마':'🌸','아빠':'🌍'};
     const clr = {'소영 언니':'#EEEDFE','엄마':'#FBEAF0','아빠':'#E1F5EE'};
-    el.innerHTML = arr.map(r => `
-      <div class="list-item">
-        <div class="avatar" style="background:${clr[r.who]||'#EEEDFE'}">${ico[r.who]||'👤'}</div>
-        <div class="item-body">
-          <div class="item-row">
-            <span class="item-name">${r.who}</span>
-            <span class="item-amount">${(r.amt||0).toLocaleString()}만원</span>
-          </div>
-          ${r.memo ? `<div class="item-detail">${r.memo}</div>` : ''}
-          <div class="item-date">${fmt(r.date)}</div>
-        </div>
-        <button class="btn-del" onclick="delMoney('${r._key}')">✕</button>
-      </div>`).join('');
-    const total = arr.reduce((s,r) => s+(r.amt||0), 0);
-    tot.textContent = `${total.toLocaleString()}만원`;
+    el.innerHTML = arr.map(r =>
+      '<div class="list-item">'+
+        '<div class="avatar" style="background:'+(clr[r.who]||'#EEEDFE')+'">'+(ico[r.who]||'👤')+'</div>'+
+        '<div class="item-body">'+
+          '<div class="item-row"><span class="item-name">'+r.who+'</span><span class="item-amount">'+((r.amt||0).toLocaleString())+'만원</span></div>'+
+          (r.memo ? '<div class="item-detail">'+r.memo+'</div>' : '')+
+          '<div class="item-date">'+fmt(r.date)+'</div>'+
+        '</div>'+
+        '<button class="btn-del" onclick="delMoney(\''+r._key+'\')">✕</button>'+
+      '</div>'
+    ).join('');
+    tot.textContent = arr.reduce((s,r)=>s+(r.amt||0),0).toLocaleString()+'만원';
   }
-
-  // ── 응원 메시지 ────────────────────────────────────
   db.ref('cheers').on('value', snap => {
     const data = snap.val() || {};
     const arr = Object.entries(data).map(([k,v]) => ({...v, _key:k}));
@@ -559,45 +335,38 @@
     renderCheer(arr);
     document.getElementById('s-cheer').textContent = arr.length;
   });
-
   function setSender(btn, name) {
     sender = name;
     document.querySelectorAll('.sender-btn').forEach(b => b.classList.remove('on'));
     btn.classList.add('on');
   }
-
   function addCheer() {
     const text = document.getElementById('c-text').value.trim();
     if (!text) { alert('메시지를 입력해주세요!'); return; }
     db.ref('cheers').push({ who: sender, text, date: today(), ts: Date.now() });
     document.getElementById('c-text').value = '';
   }
-
   function delCheer(key) { if(confirm('삭제할까요?')) db.ref('cheers/'+key).remove(); }
-
   function renderCheer(arr) {
     const el = document.getElementById('cheer-list');
     if (!arr.length) { el.innerHTML = '<div class="empty">첫 응원을 남겨보세요 🌸</div>'; return; }
-    el.innerHTML = arr.map(r => `
-      <div style="position:relative;margin-bottom:8px">
-        <div class="cheer-bubble">
-          <div class="cheer-who">${r.who}</div>
-          <div class="cheer-msg">${r.text}</div>
-          <div class="cheer-date">${fmt(r.date)}</div>
-        </div>
-        <button class="btn-del" onclick="delCheer('${r._key}')" style="position:absolute;top:8px;right:6px">✕</button>
-      </div>`).join('');
+    el.innerHTML = arr.map(r =>
+      '<div style="position:relative;margin-bottom:8px">'+
+        '<div class="cheer-bubble">'+
+          '<div class="cheer-who">'+r.who+'</div>'+
+          '<div class="cheer-msg">'+r.text+'</div>'+
+          '<div class="cheer-date">'+fmt(r.date)+'</div>'+
+        '</div>'+
+        '<button class="btn-del" onclick="delCheer(\''+r._key+'\')" style="position:absolute;top:8px;right:6px">✕</button>'+
+      '</div>'
+    ).join('');
   }
-
-  // ── 탭 ────────────────────────────────────────────
   function showTab(name, btn) {
     document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
     document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
     document.getElementById('sec-'+name).classList.add('on');
     btn.classList.add('on');
   }
-
-  // 초기값
   document.getElementById('m-date').value = today();
 </script>
 </body>
